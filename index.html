@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Click Me</title>
+</head>
+
+<body>
+
+<div id="clickherestart" >
+    <button onclick="startthegame()">Click here to Start</button>
+    
+</div>
+
+<!-- Le container contient l'ecran de jeux et les scores -->
+<div class="center">
+<div id ="ecranjeu">
+
+    <!-- Div rotation -->
+    <!-- class rotating utiliser en javascript-->
+    <div id="ClickMe"><span>click me</span></div>
+    
+
+</div>
+<div id="informationscore" class="center">
+    <div id="score" class="blockwhite center">
+        <p>Score</p>
+        <span id="thescore">0</span>
+    </div>
+    <div id="level" class="blockwhite center">
+        <p>Level</p>
+        <span id="textlevel">1</span>
+    </div>
+    <div id="ClickRestant" class="blockwhite center">
+        <p>Click to Next Level</p>
+        <span id="nextlevel">10</span>
+    </div>
+    <div id="PointsPerdu" class="blockwhite center">
+        <p>Points Lost</p>
+        <span id="textpointsPerdu">0</span>
+    </div>
+    <div id="horloge" class="blockwhite center">
+        <p>Seconde</p>
+        <span id="textSeconde">60</span>
+    </div>
+    
+</div>
+</div>
+<script src="js/main.js"></script>
+</body>
+</hmtl>

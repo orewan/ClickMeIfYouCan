@@ -1,0 +1,70 @@
+/** class center**/
+.center{
+    margin: 0 auto;
+}
+
+.blockwhite{
+    width: 150px;
+    height: 60px;
+    background-color: white;
+    margin-top:20px;
+    
+    text-align: center;
+}
+
+/*********** Ecran de Click here Start ***********/
+#clickherestart{
+    width: 1500px;
+    height: 80px;
+    margin-left : auto;
+    margin-right : auto;
+    background-color: blueviolet;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/*********** Ecran de Jeux ***********/
+#ecranjeu{
+    width: 1000px;
+    height: 600px;
+    background-color: black;
+    
+    margin-left: 50px; 
+    position: absolute;
+    
+    
+}
+
+#informationscore{
+    width: 200px;
+    height: 600px;
+    background-color: blue;
+    
+    margin-left: 1100px; 
+    position: absolute;
+}
+
+/* -- Div en rotation -- */
+
+#ClickMe{
+    position: relative;
+    width: 100px;
+    height: 20px;
+    background-color: blue;
+    color:white;
+    text-align: center;
+}
+
+
+@keyframes rotating {
+    from{
+        -webkit-transform: rotate(360deg);
+    }
+    to{
+        -webkit-transform: rotate(0deg);
+    }
+}
+
+.rotating {
+    -webkit-animation: rotating 2s linear infinite;
+}
