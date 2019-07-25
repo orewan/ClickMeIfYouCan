@@ -155,11 +155,11 @@ function EcranJeuNoir(){
 /** */
 function positionAleatoire(){
 // Position Aleatoire
- // ClickMe.style.left = Math.floor(Math.random()*900) + "px";
- // ClickMe.style.top = Math.floor(Math.random()*500) + "px";
+  ClickMe.style.left = Math.floor(Math.random()*900) + "px";
+  ClickMe.style.top = Math.floor(Math.random()*500) + "px";
   // Pour les test 
-  ClickMe.style.left = 100 + "px";
-  ClickMe.style.top = 100 + "px";
+ // ClickMe.style.left = 100 + "px";
+ // ClickMe.style.top = 100 + "px";
   
 }
 
