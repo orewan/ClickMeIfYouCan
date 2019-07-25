@@ -37,6 +37,67 @@ var textSeconde = document.getElementById("textSeconde");
 
 /** variabale seconde barre de rotation, declenchement aleatoire */
  var secondeRetard = 300;
+/** variable temps de rotation de la barre */
+var rotationBarre = 2;
+
+/** Json Higscore */
+var divHighScore = document.getElementById("divHighScore");
+var highscore = [];
+//var highscoreorder = [];
+var highscorejson = localStorage.getItem("highscore");
+
+localStorage.setItem('highscore', JSON.stringify(highscore));
+if(highscorejson != null){
+  highscore = JSON.parse(highscorejson); 
+  afficheTheScore();
+}
+
+function afficheTheScore(){
+  var toappend = "";
+  highscore.forEach(function(name){
+    toappend += `<div>${name.name} - ${name.score}<div>${name.date}</div></div>`;
+  });
+  divHighScore.innerHTML = toappend;
+}
+
+/*
+var a,b;
+function sortorderscore(){
+  highscore.sort(function(a,b){
+  return b.score-a.score;
+});
+}
+highscoreorder = sortorderscore();
+
+localStorage.setItem('highscoreorder', JSON.stringify(highscoreorder));
+if(highscorejson != null){
+  highscoreorder = JSON.parse(highscorejson);
+  afficheTheScore();
+}
+
+// j'arrive a la mettre dans l'odre que je veux et je n'arrive pas a la recuperer.
+
+function afficheTheScore(){
+  var toappend = "";
+  highscoreorder.forEach(function(name){
+    toappend += `<div>${name.name} - ${name.score}<div>${name.date}</div></div>`;
+  });
+  divHighScore.innerHTML = toappend;
+}
+
+*/
+/* Json en local storage
+var highscore = [
+  {name: "Naruto", score: 600, date : "07/21/2019"},
+  {name: "Luffy", score: 1540,date : "07/11/2019"}, 
+  {name: "Lechat", score: 300,date : "07/25/2019"}, 
+  {name: "Sangoku", score: 25,date : "07/16/2019"}, 
+  {name: "Powers Rangers", score: 5,date : "07/10/2019"}
+];
+
+localStorage.setItem('highscore', JSON.stringify(highscore));
+*/
+
 
 /** Demarrage du jeu */
 function startthegame(){
@@ -49,9 +110,11 @@ function startthegame(){
 function gamestart(){
   /** rotation de la div */
   rotation();
-
+  /** vitesse de la rotation */
+  vitesseRotation();
   /** horloge qui commence */
   horloge();
+  
 
   /**Compte */
   ClickMe.addEventListener("click", clickrectangle);
@@ -94,9 +157,9 @@ function positionAleatoire(){
 // Position Aleatoire
  // ClickMe.style.left = Math.floor(Math.random()*900) + "px";
  // ClickMe.style.top = Math.floor(Math.random()*500) + "px";
-   
+  // Pour les test 
   ClickMe.style.left = 100 + "px";
-   ClickMe.style.top = 100 + "px";
+  ClickMe.style.top = 100 + "px";
   
 }
 
@@ -106,10 +169,13 @@ function positionAleatoire(){
 function rotation(){
   
   ClickMe.classList.toggle('rotating');
-  //element.animate()
   
 }
-
+/** vitesse de rotation de la div */
+function vitesseRotation(){
+  ClickMe.style.animationDuration = rotationBarre + "s";
+  
+}
 
 
 /*** L'horloge commence ****/
@@ -131,6 +197,11 @@ textSeconde.innerText = seconde;
   }
   return seconde;
 }
+/** reset the alarm */
+function horlogedeux(){
+  clearInterval();
+  }
+
 
 /** Niveau du Jeu */
 function Level(){
@@ -141,21 +212,32 @@ function Level(){
   Score(level);
 
   if(niveauSuivant == 0){
-  level++;
-  secondeRetard -= 50;
-  
+  level++; 
+
   textlevel.innerText=level;
   clickRestant=10;
   clickreussi = 0;
   nextlevel.innerText = clickRestant;
   
+  /** Variable seconde = Ajoute 10 secondes au timer, seconde retard = enleve 50 ms, rotationBarre = enleve 0.25s  */
   seconde += 10;
-    if(level>5){
+  
+  /** time */
+  secondeRetard -= 50;
+  time(secondeRetard);
+
+  rotationBarre -= 0.25;
+  vitesseRotation(rotationBarre);
+  
+  
+  if(level>5){
       winGame();
     }
-  return seconde;
+
+  
+  
   }
- return level;
+  return seconde, secondeRetard,rotationBarre,level;
 }
 
 /** Nombre de point */
@@ -179,28 +261,40 @@ function scorePerdu(){
   console.log("mon niveau est de :"+level);
 }
 
-
+/**Position aleatoire de la barre bleu */
 function time(){
     setTimeout(positionAleatoire,secondeRetard);
 }
+
 
 /*** Le jeu s'arrete */
 
 function winGame(){
   // reset the score
-  alert("Vous avez gagne le jeu \n votre nombre de click est de :"+clickTotalreussi ); 
+  alert("Vous avez gagne le jeu \n votre nombre de click est de :"+clickTotalreussi + "\n votre score est de :"+nbreScore ); 
   resetThegame();
 }
 
 
 function gameoverlose(){
   /**De declenche si le temps(horloge) arrive a zero */
-  alert("Vous n'avez pas gagne le jeu, entrainez vous pour faire mieux, \n votre nombre de missclick est de :"+clickperdu);
+  alert("Vous n'avez pas gagne le jeu, entrainez vous pour faire mieux, \n votre nombre de click perdu est de :"+clickperdu);
  // thescore.innerText=clickperdu;
 }
 
 function resetThegame(){
+  seconde = 60;
+  textSeconde.innerText = seconde;
+  horlogedeux();
+  level=1;
+  textlevel.innerText=1;
+  clickreussi=0;
+  clickTotalreussi=0;
+  nbreScore=0;
+  thescore.innerText=0;
+  rotationBarre = 2;
 
+  ClickMe.classList.toggle('rotating');
 }
 
 
