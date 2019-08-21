@@ -81,7 +81,7 @@ function compareScore(){
     
     nomSuperHeros = prompt("SuperHeros vous etes parmis les 5 meilleurs \n Entrez votre nom super heros : ");
     
-    alert("Vous avez gagne le jeu \n votre score est dans l'array des highscore \n votre nombre de total click est de :"+(clickTotalreussi+clickperdu) + "\n votre score est de :"+nbreScore+"\n votre nombre click perdu est :"+clickperdu ); 
+    alert("votre score est dans l'array des highscore \n votre nombre de total click est de :"+(clickTotalreussi+clickperdu) + "\n votre score est de :"+nbreScore+"\n votre nombre click perdu est :"+clickperdu ); 
     newPlayer = {name: nomSuperHeros, score: nbreScore , date : theDate};
     console.log(newPlayer);    
     highscore.push(newPlayer);
@@ -227,12 +227,13 @@ function EcranJeuNoir(){
 
 /** */
 function positionAleatoire(){
-// Position Aleatoire
- // ClickMe.style.left = Math.floor(Math.random()*900) + "px";
- // ClickMe.style.top = Math.floor(Math.random()*500) + "px";
-  // Pour les test 
- ClickMe.style.left = 100 + "px";
- ClickMe.style.top = 100 + "px";
+// Position Aleatoire pour le jeu ce qui est normal
+  ClickMe.style.left = Math.floor(Math.random()*900) + "px";
+  ClickMe.style.top = Math.floor(Math.random()*500) + "px";
+  
+  // Pour les test la barre reste a une position fixe
+  //ClickMe.style.left = 100 + "px";
+  //ClickMe.style.top = 100 + "px";
   
 }
 
@@ -349,7 +350,7 @@ function winGame(){
 function gameoverlose(){
   /**De declenche si le temps(horloge) arrive a zero */
   alert("Vous n'avez pas gagne le jeu, entrainez vous pour faire mieux, \n votre nombre total de points est :"+nbreScore);
- // compareScore();
+  compareScore();
   resetThegame();
 }
 
