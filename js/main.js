@@ -9,7 +9,6 @@ var ecranjeu = document.getElementById("ecranjeu");
 var textlevel = document.getElementById("textlevel");
 var level = 1;
 
-
 /** Le score  */
 var thescore = document.getElementById("thescore");
 var nbreScore = 0;
@@ -19,7 +18,6 @@ var pointsLevel =0;
 var pointPerdu =0;
 var pointTotalPerdu=0;
 var textpoinPerdu = document.getElementById("textpointsPerdu");
-
 
 /** variable de compteur sur la div */
 var clickreussi = 0;
@@ -34,11 +32,80 @@ var niveauSuivant;
 /** variable pour l'horloge */
 var seconde = 60;
 var textSeconde = document.getElementById("textSeconde");
+var t; /** variable pour annuler le setinterval */
+
+/** Date */
+var d = new Date();
+var theDate = d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
+console.log(theDate);
 
 /** variabale seconde barre de rotation, declenchement aleatoire */
- var secondeRetard = 300;
+ var secondeRetard = 6000;
 /** variable temps de rotation de la barre */
 var rotationBarre = 2;
+
+/**Initialisation du Json */
+/* Json en local storage
+*/
+
+var highscore = [
+  {name: "Naruto", score: 60, date : "07/21/2019"},
+  {name: "Luffy", score: 1140,date : "07/11/2019"}, 
+  {name: "Lechat", score: 1300,date : "07/25/2019"}, 
+  {name: "Sangoku", score: 900,date : "07/16/2019"}, 
+  {name: "Powers Rangers", score: 250,date : "07/10/2019"}
+];
+// Met dans l'ordre des score le tableau Json
+var a,b;
+
+highscore.sort(function(a,b){
+  return b.score-a.score;
+});
+
+/** New player */
+var newPlayer = [];
+var nomSuperHeros = "";
+
+/** Recuperer le dernier objet du "tableau" (car c'est un tableau d'objet) */
+// Deux methode soit highscore[4] ou l'autre methode plus general
+var lastObjectScore = highscore[highscore.length-1] ;
+console.log(lastObjectScore);
+/* comparaison du score */
+/** Je ne veux pas egale, il doit faire un score superieur, car si le score est le meme, je ne change pas le joueur
+ * Sinon il n'y a pas de challenge. Mais on peut faire les deux si on veut. la deuxieme methode est plus longue a faire.
+ * array dans le text parce tu ne veux pas utiliser le mot "tableau". Ha ha ha !
+ */
+function compareScore(){
+  if(lastObjectScore.score<nbreScore)
+  {
+    
+    nomSuperHeros = prompt("SuperHeros vous etes parmis les 5 meilleurs \n Entrez votre nom super heros : ");
+    
+    alert("Vous avez gagne le jeu \n votre score est dans l'array des highscore \n votre nombre de total click est de :"+(clickTotalreussi+clickperdu) + "\n votre score est de :"+nbreScore+"\n votre nombre click perdu est :"+clickperdu ); 
+    newPlayer = {name: nomSuperHeros, score: nbreScore , date : theDate};
+    console.log(newPlayer);    
+    highscore.push(newPlayer);
+  //  console.log(highscore);
+    highscore.sort(function(a,b){return b.score-a.score;});
+  //  console.log(highscore);
+    highscore.pop();
+    console.log(highscore);
+    localStorage.setItem('highscore', JSON.stringify(highscore));
+    afficheTheScore();
+  }
+  else{
+    alert("Vous avez gagne le jeu \n votre score n'est pas suffisant pour etre dans l'array des highscore \n votre nombre de total click est de :"+(clickTotalreussi+clickperdu) + "\n votre score est de :"+nbreScore+"\n votre nombre click perdu est :"+clickperdu ); 
+  
+  }
+
+}
+
+
+// Met en local storage
+localStorage.setItem('highscore', JSON.stringify(highscore));
+
+
+/** Affichage de Json - Autre methode mit en commentaire pour afficher le Json */
 
 /** Json Higscore */
 var divHighScore = document.getElementById("divHighScore");
@@ -55,12 +122,27 @@ if(highscorejson != null){
 function afficheTheScore(){
   var toappend = "";
   highscore.forEach(function(name){
-    toappend += `<div>${name.name} - ${name.score}<div>${name.date}</div></div>`;
+    toappend += `<div>${name.name} - score : ${name.score} - date: ${name.date}</div>`;
   });
   divHighScore.innerHTML = toappend;
 }
 
+
+
+/** Autre methode pour afficher le Json */
 /*
+myStorage = JSON.stringify(highscore) ;
+localStorage.setItem("highscorejson",myStorage) ;
+recup = localStorage.getItem("highscorejson");
+parsetable = JSON.parse(recup) ;
+
+parsetabletheHs.forEach (function(e) {
+    console.log(e);
+    document.getElementById("hs").innerHTML += e.nom + " " + e.score + "<br>"; 
+});
+*/
+
+/* Autre code qui fonctionne
 var a,b;
 function sortorderscore(){
   highscore.sort(function(a,b){
@@ -86,17 +168,6 @@ function afficheTheScore(){
 }
 
 */
-/* Json en local storage
-var highscore = [
-  {name: "Naruto", score: 600, date : "07/21/2019"},
-  {name: "Luffy", score: 1540,date : "07/11/2019"}, 
-  {name: "Lechat", score: 300,date : "07/25/2019"}, 
-  {name: "Sangoku", score: 25,date : "07/16/2019"}, 
-  {name: "Powers Rangers", score: 5,date : "07/10/2019"}
-];
-
-localStorage.setItem('highscore', JSON.stringify(highscore));
-*/
 
 
 /** Demarrage du jeu */
@@ -121,6 +192,8 @@ function gamestart(){
   ecranjeu.addEventListener("click",EcranJeuNoir);
   
   ClickMe.addEventListener("mouseover",time);
+  
+
 }
 
  /** position aleatoire */
@@ -155,11 +228,11 @@ function EcranJeuNoir(){
 /** */
 function positionAleatoire(){
 // Position Aleatoire
-  ClickMe.style.left = Math.floor(Math.random()*900) + "px";
-  ClickMe.style.top = Math.floor(Math.random()*500) + "px";
+ // ClickMe.style.left = Math.floor(Math.random()*900) + "px";
+ // ClickMe.style.top = Math.floor(Math.random()*500) + "px";
   // Pour les test 
- // ClickMe.style.left = 100 + "px";
- // ClickMe.style.top = 100 + "px";
+ ClickMe.style.left = 100 + "px";
+ ClickMe.style.top = 100 + "px";
   
 }
 
@@ -183,7 +256,7 @@ function vitesseRotation(){
 function horloge(){
 seconde = 60;
 
-setInterval(timer,1000);
+t = setInterval(timer,1000);
 textSeconde.innerText = seconde;
 
   function timer(){
@@ -197,10 +270,6 @@ textSeconde.innerText = seconde;
   }
   return seconde;
 }
-/** reset the alarm */
-function horlogedeux(){
-  clearInterval();
-  }
 
 
 /** Niveau du Jeu */
@@ -271,29 +340,44 @@ function time(){
 
 function winGame(){
   // reset the score
-  alert("Vous avez gagne le jeu \n votre nombre de click est de :"+clickTotalreussi + "\n votre score est de :"+nbreScore ); 
+  alert("Vous avez gagne le jeu !!! ");
+  compareScore();
   resetThegame();
 }
 
 
 function gameoverlose(){
   /**De declenche si le temps(horloge) arrive a zero */
-  alert("Vous n'avez pas gagne le jeu, entrainez vous pour faire mieux, \n votre nombre de click perdu est de :"+clickperdu);
- // thescore.innerText=clickperdu;
+  alert("Vous n'avez pas gagne le jeu, entrainez vous pour faire mieux, \n votre nombre total de points est :"+nbreScore);
+ // compareScore();
+  resetThegame();
 }
 
 function resetThegame(){
+  // Il y a deux methodes, soit recharger la page ou reinitialiser les variables
+  //window.location.reload();
+
+  //Remetre a 0 les variables
   seconde = 60;
   textSeconde.innerText = seconde;
-  horlogedeux();
+ 
   level=1;
   textlevel.innerText=1;
   clickreussi=0;
   clickTotalreussi=0;
+  clickperdu=0;
+
   nbreScore=0;
   thescore.innerText=0;
+  
+  clickRestant = 10;
+  nextlevel.innerText = clickRestant;
+  
   rotationBarre = 2;
-
+  clearInterval(t);
+  
+  pointTotalPerdu =0;
+  textpoinPerdu.innerText = pointTotalPerdu;
   ClickMe.classList.toggle('rotating');
 }
 
